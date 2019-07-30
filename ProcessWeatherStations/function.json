@@ -1,0 +1,12 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "name": "stationData",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "bom-gov-au/stations/stations.txt",
+      "connection": "BlobStoreBindingConnection"
+    }
+  ]
+}

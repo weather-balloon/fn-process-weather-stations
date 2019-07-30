@@ -1,0 +1,28 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[[source]]
+name = "wb-artifacts"
+# The password is loaded from the environment vars but you can also
+# use a .env file: https://docs.pipenv.org/en/latest/advanced/#automatic-loading-of-env
+# Note: when using `pipenv shell` you need to drop out and reactivate if you change your `.env`
+url = "https://wb-artifacts:'${WB_ARTIFACTS_PASSWORD}'@pkgs.dev.azure.com/weatherballoon/_packaging/wb-artifacts@Release/pypi/simple/"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+autopep8 = "*"
+rope = "*"
+
+[packages]
+parse-bom-stations = {version = "==0.3.2",index = "wb-artifacts"}
+azure-functions = ">=1.0.0b5"
+azure-cosmosdb-table = "*"
+
+[requires]
+python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true
