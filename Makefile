@@ -2,24 +2,22 @@
 .DEFAULT_GOAL := init
 
 init:
-	/usr/bin/env python3 -m pip install pipenv --upgrade
 
-	# Use --pre as the Azure libs aren't at final release yet
-	pipenv install --dev --pre
+	pipenv install --dev
+	pipenv run pre-commit install
 
-check:
+check: lint
 	pipenv check
+	pipenv run bandit --ini .bandit -r process_weather_stations/
 
 lint:
-	pylint ProcessWeatherStations
-
-#test: 
-	#pipenv run tox
+	pipenv run pylint process_weather_stations
 
 start:
 	pipenv run func start
 
-pre-commit: lint 	
+pre-commit: lint
+	pipenv check
 
 clean:
 	rm -rf build dist .egg .eggs *.egg-info pip-wheel-metadata

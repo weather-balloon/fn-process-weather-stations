@@ -1,3 +1,8 @@
+"""
+Azure function for parsing the BOM station data
+and upserting into a table
+"""
+
 import logging
 import json
 import os
@@ -37,6 +42,8 @@ def create_entity(station: WeatherStationTuple) -> dict:
 
 
 class BatchManager:
+    """ Functionality for batching the table jobs  """
+
     def __init__(self, table_service: TableService, table_name: str, max_batch_size=100):
         self.partition_dict: Dict[str, List[Entity]] = {}
         self.table_service = table_service
@@ -44,28 +51,35 @@ class BatchManager:
         self.max_batch_size = max_batch_size
 
     def add_entity(self, entity: Entity):
+        """ Adds an entity to the batch """
         if entity.PartitionKey not in self.partition_dict:
             self.partition_dict[entity.PartitionKey] = []
 
         self.partition_dict[entity.PartitionKey].append(entity)
 
     def _process_batch(self, entity_list):
-        for segment in [entity_list[i * self.max_batch_size:(i + 1) * self.max_batch_size] for i in range((len(entity_list) + self.max_batch_size - 1) // self.max_batch_size)]:
+        """ Processes the jobs in sets of batches of max_batch_size """
+        for segment in [entity_list[i * self.max_batch_size:(i + 1) * self.max_batch_size]
+                        for i in range((len(entity_list) + self.max_batch_size - 1) // self.max_batch_size)]:
             batch = TableBatch()
             for entity in segment:
                 batch.insert_or_replace_entity(entity)
 
-            logging.info(f"Committing batch size {len(segment)}")
+            logging.info('Committing batch size %i', len(segment))
             self.table_service.commit_batch(self.table_name, batch)
 
     def process(self):
+        """ Process the table jobs """
         for entity_list in self.partition_dict.values():
             self._process_batch(entity_list)
 
 
+#pylint: disable=invalid-name
 async def main(stationData: func.InputStream):
+    """ Azure function body """
     logging.info(
-        f"Python blob trigger function processed blob ({stationData.name}) - {stationData.length} bytes")
+        'Python blob trigger function processed blob (%s) - %s bytes',
+        stationData.name, stationData.length)
 
     table_service = TableService(
         connection_string=os.environ['ConnectionStrings:TableBindingConnection'])
@@ -77,11 +91,11 @@ async def main(stationData: func.InputStream):
 
     bytes_data = stationData.read()
 
-    station_data = StringIO(str(bytes_data, 'ascii'), newline="\n")
+    stationData = StringIO(str(bytes_data, 'ascii'), newline="\n")
 
-    station_list = parse_station_list(station_data)
+    station_list = parse_station_list(stationData)
 
-    logging.info(f"Processing {len(station_list)} records")
+    logging.info('Processing %i records', len(station_list))
 
     for record in station_list:
         entity = create_entity(record)
@@ -89,4 +103,4 @@ async def main(stationData: func.InputStream):
 
     batch_manager.process()
 
-    logging.info(f"Updated {table_name} - {len(station_list)} records")
+    logging.info('Updated %s - %i records', table_name, len(station_list))

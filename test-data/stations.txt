@@ -1,0 +1,17 @@
+Bureau of Meteorology product IDCJMC0014.                                       Produced: 18 Jul 2019
+
+   Site  Dist  Site name                                 Start     End      Lat       Lon Source         STA Height (m)   Bar_ht    WMO
+------- ----- ---------------------------------------- ------- ------- -------- --------- -------------- --- ---------- -------- ------
+ 300055 300   DAVIS (WHOOP WHOOP)                         2007      .. -68.4723   78.8735 GPS            ANT      593.0    594.4  89570
+ 300060 300   CASEY SKIWAY SOUTH                          2008      .. -66.2803  110.7615 GPS            ANT      390.0    398.5  89809
+ 300061       BUNGER HILLS                                2015      .. -66.2510  100.6000 GPS            ANT       12.0     16.0  89817
+ 002017 02    LOUISA DOWNS                                1915    1995 -18.7106  126.7111 .....          WA       248.0       ..     ..
+ 002018 02    MABEL DOWNS                                 1922    2004 -17.1792  128.1217 GPS            WA       254.0       ..     ..
+ 002019 02    MARGARET RIVER STATION                      1913      .. -18.6253  126.8617 GPS            WA       280.0       ..     ..
+ 002020 02    MOOLA BULLA                                 1903      .. -18.1894  127.5011 GPS            WA       430.0       ..     ..
+
+19375 stations
+
+(c) Copyright Commonwealth of Australia 2019, Bureau of Meteorology (ABN 92 637 533 532)
+Please note Copyright, Disclaimer and Privacy Notice, accessible at <http://www.bom.gov.au/other/copyright.shtml>
+.
