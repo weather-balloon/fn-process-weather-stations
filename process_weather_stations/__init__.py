@@ -82,7 +82,7 @@ async def main(stationData: func.InputStream):
         stationData.name, stationData.length)
 
     table_service = TableService(
-        connection_string=os.environ['ConnectionStrings:TableBindingConnection'])
+        connection_string=os.environ['TableBindingConnection'])
 
     table_name = 'WeatherStations'
     table_service.create_table(table_name, fail_on_exist=False)

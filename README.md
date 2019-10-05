@@ -44,6 +44,49 @@ The `test-data/stations.txt` is a small subset of the full data so is a useful s
 
 You should see that a `WeatherStations` table is created and rows added.
 
+## Deploy
+
+### Deploying from your RC to Azure
+
+You can quickly spin up a test environment in Azure using the following:
+
+    RG_NAME=fn-process-weather-stations-test
+    SA_NAME=fpwst$USER
+    RG_LOCATION=australiaeast
+    AZURE_STORAGE_ACCOUNT=$SA_NAME
+
+    az login
+
+    az group create --name $RG_NAME --location $RG_LOCATION
+
+    az storage account create --name $SA_NAME --resource-group $RG_NAME \
+        --kind StorageV2 --sku Standard_LRS --https-only true
+
+    az functionapp create --resource-group $RG_NAME --name $RG_NAME --storage-account $SA_NAME \
+        --os-type Linux --runtime python --consumption-plan-location $RG_LOCATION
+
+    az storage container create --name bom-gov-au --account-name $SA_NAME \
+        --account-key $(az storage account keys list --account-name $SA_NAME \
+        --query [0].value --output tsv)
+
+
+    func azure functionapp publish $RG_NAME --build remote
+
+### Using an ARM Template
+
+    RG_NAME_PREFIX=wb-fn-process-weather-stations
+    RG_LOCATION=australiaeast
+    FN_ENVIRONMENT=dev
+    FN_SERVICE=observations
+    RG_NAME=$RG_NAME_PREFIX-$FN_ENVIRONMENT
+
+    az group create --name $RG_NAME_PREFIX-$FN_ENVIRONMENT \
+        --location $RG_LOCATION --tags environment=$FN_ENVIRONMENT service=$FN_SERVICE
+
+    az group deployment validate --resource-group $RG_NAME --template-file azuredeploy.json
+
+    az group deployment create --resource-group $RG_NAME --template-file azuredeploy.json
+
 ## References
 
 - [Azure Functions Python developer guide](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python)
