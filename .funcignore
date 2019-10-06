@@ -8,3 +8,8 @@ Pipfile
 Pipfile.lock
 process_weather_stations/__pycache__
 process_weather_stations/readme.md
+.python_packages/
+.vscode/
+bin/
+obj/
+.env

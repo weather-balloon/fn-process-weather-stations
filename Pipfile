@@ -8,7 +8,7 @@ name = "wb-artifacts"
 # The password is loaded from the environment vars but you can also
 # use a .env file: https://pipenv.readthedocs.io/en/latest/advanced/#support-for-environment-variables
 # Note: when using `pipenv shell` you need to drop out and reactivate if you change your `.env`
-url = "https://wb-artifacts-public:'${WB_ARTIFACTS_PASSWORD}'@pkgs.dev.azure.com/weatherballoon/Weather%20Balloon/_packaging/wb-artifacts-public/pypi/simple/"
+url = "https://pkgs.dev.azure.com/weatherballoon/Weather%20Balloon/_packaging/wb-artifacts-public/pypi/simple/"
 verify_ssl = true
 
 [dev-packages]
@@ -19,7 +19,7 @@ pre-commit = "*"
 bandit = "*"
 
 [packages]
-parse-bom-stations = "==0.3.10"
+parse-bom-stations = "==0.3.12"
 azure-functions = "*"
 azure-cosmosdb-table = "*"
 

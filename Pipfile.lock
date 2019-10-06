@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7945d253bb5950382984e97a33e63e94b9ea83ffb7d17d6ffd32229d99d27f74"
+            "sha256": "bbca942e449b4d9c5e56db0b6cfe0d753ae012ed43b59f65bfc818e2237151d5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -15,7 +15,7 @@
             },
             {
                 "name": "wb-artifacts",
-                "url": "https://wb-artifacts-public:'${WB_ARTIFACTS_PASSWORD}'@pkgs.dev.azure.com/weatherballoon/Weather%20Balloon/_packaging/wb-artifacts-public/pypi/simple/",
+                "url": "https://pkgs.dev.azure.com/weatherballoon/Weather%20Balloon/_packaging/wb-artifacts-public/pypi/simple/",
                 "verify_ssl": true
             }
         ]
@@ -191,10 +191,11 @@
         },
         "parse-bom-stations": {
             "hashes": [
-                "sha256:130cd999ab0be061dec70726a19ddbd94aa5248caa07837525d9a0f7013f6f25"
+                "sha256:3ff7b2ccda8d90534a29e89a99efb4f86a0cd010fda2d35ef23cb3fc42146e37",
+                "sha256:40d2b7277c796e35e9fe4a93590ce21aec3249b0d7d61a60b002dc26301007bc"
             ],
             "index": "pypi",
-            "version": "==0.3.10"
+            "version": "==0.3.12"
         },
         "pycparser": {
             "hashes": [

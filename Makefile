@@ -16,6 +16,9 @@ lint:
 start:
 	pipenv run func start
 
+requirements:
+	pipenv lock -r > requirements.txt
+
 pre-commit: lint
 	pipenv check
 

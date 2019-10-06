@@ -47,3 +47,4 @@ fn-process-weather-stations.zip
 .vscode
 test-data/bomstations.txt
 *.copy
+requirements.txt

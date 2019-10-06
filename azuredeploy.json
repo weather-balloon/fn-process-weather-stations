@@ -10,7 +10,7 @@
             }
         },
         "storageAccountNamePrefix": {
-            "defaultValue": "fnpws",
+            "defaultValue": "wbfnpws",
             "type": "string",
             "maxLength": 20,
             "minLength": 3
