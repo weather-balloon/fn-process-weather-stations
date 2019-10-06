@@ -1,0 +1,38 @@
+trigger:
+  - master
+
+variables:
+  subscription: 'Azure Subscription'
+  location: 'australiaeast'
+  resourceGroupNamePrefix: 'wb-fn-process-weather-stations'
+  serviceName: observations
+
+stages:
+  - stage: DeployToDev
+    displayName: FN - Process Weather Stations - Development
+    variables:
+      environment: dev
+    jobs:
+      - job: Deploy
+        steps:
+          - task: AzureCLI@1
+            displayName: Create the resource group
+            inputs:
+              azureSubscription: $(subscription)
+              scriptLocation: 'inlineScript'
+              inlineScript: 'az group create --name $(resourceGroupNamePrefix)-$(environment) --location $(location) --tags environment=$(environment) service=$(serviceName)'
+
+          - task: AzureResourceGroupDeployment@2
+            name: deployTemplate
+            displayName: Deploy template
+            inputs:
+              azureSubscription: $(subscription)
+              resourceGroupName: $(resourceGroupNamePrefix)-$(environment)
+              location: $(location)
+              deploymentMode: incremental
+              deploymentName: $(resourceGroupNamePrefix)_$(environment)
+              csmFile: azuredeploy.json
+              overrideParameters: >
+                -tagEnvironment $(environment)
+                -tagService $(serviceName)
+              deploymentOutputs: deploymentOutput
