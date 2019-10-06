@@ -68,6 +68,12 @@ stages:
     jobs:
       - job:
         steps:
+
+          - task: DownloadPipelineArtifact@2
+            inputs:
+                artifact: drop
+                path: $(Pipeline.Workspace)/drop
+
           - task: AzureCLI@1
             displayName: Create the resource group
             inputs:
@@ -89,3 +95,10 @@ stages:
                 -tagEnvironment $(environment)
                 -tagService $(serviceName)
               deploymentOutputs: deploymentOutput
+
+          - task: AzureFunctionApp@1
+            inputs:
+              azureSubscription: $(subscription)
+              appType: functionAppLinux
+              appName: '<Name of function app>'
+              package: $(Pipeline.Workspace)/drop/build$(Build.BuildId).zip
