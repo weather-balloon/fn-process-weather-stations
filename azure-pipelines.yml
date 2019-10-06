@@ -96,9 +96,22 @@ stages:
                 -tagService $(serviceName)
               deploymentOutputs: deploymentOutput
 
+          - task: PowerShell@2
+            name: parseOutputs
+            displayName: Parse the deployment outputs
+            inputs:
+              targetType: inline
+              script: |
+                Write-Host '$(deploymentOutput)'
+                $outputs = ConvertFrom-Json '$(deploymentOutput)'
+                $functionName = $outputs.functionName.value
+                Write-Host "##vso[task.setvariable variable=functionName;]$functionName"
+
           - task: AzureFunctionApp@1
+            name: deployFunction
+            displayName: Deploy function app
             inputs:
               azureSubscription: $(subscription)
               appType: functionAppLinux
-              appName: '<Name of function app>'
+              appName: $(functionName)
               package: $(Pipeline.Workspace)/drop/build$(Build.BuildId).zip

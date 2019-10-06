@@ -177,5 +177,11 @@
                 "service": "[parameters('tagService')]"
             }
         }
-    ]
+    ],
+    "outputs": {
+        "functionName": {
+            "type": "string",
+            "value": "[variables('functionName')]"
+        }
+    }
 }
