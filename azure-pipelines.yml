@@ -21,7 +21,7 @@ stages:
               architecture: 'x64'
 
           - task: CmdLine@2
-            displayName: Prepare virtualenv
+            displayName: Prepare pipenv
             inputs:
                 script: |
                   pip3 install pipenv

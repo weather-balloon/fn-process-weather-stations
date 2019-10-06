@@ -112,10 +112,11 @@
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2016-09-01",
             "name": "[variables('functionName')]",
+            "kind": "functionapp",
             "location": "[parameters('location')]",
             "properties": {
                 "name": "[variables('functionName')]",
-                "computeMode": "Dynamic"
+                "reserved": true
             },
             "sku": {
                 "name": "Y1",
