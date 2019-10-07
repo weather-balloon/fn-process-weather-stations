@@ -32,6 +32,18 @@
             "defaultValue": "wb-fn-process-weather-stations",
             "type": "string"
         },
+        "storageAccountsDataLakeNamePrefix": {
+            "type": "string",
+            "defaultValue": "wbdatalake"
+        },
+        "storageAccountsDataLakeKeyNumber": {
+            "type": "int",
+            "defaultValue": 0,
+            "allowedValues": [
+                0,
+                1
+            ]
+        },
         "tagEnvironment": {
             "type": "string",
             "defaultValue": "dev",
@@ -48,7 +60,10 @@
     },
     "variables": {
         "storageAccountName": "[concat(parameters('storageAccountNamePrefix'), parameters('tagEnvironment'))]",
-        "functionName": "[concat(parameters('functionNamePrefix'), '-', parameters('tagEnvironment'))]"
+        "functionName": "[concat(parameters('functionNamePrefix'), '-', parameters('tagEnvironment'))]",
+        "storageAccountsDataLakeName": "[concat(parameters('storageAccountsDataLakeNamePrefix'), parameters('tagEnvironment'))]",
+        "dataLakeKey": "[listKeys(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountsDataLakeName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value]",
+        "dataLakeConnectionString": "[concat('DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=', variables('storageAccountsDataLakeName'), ';AccountKey=', variables('dataLakeKey'))]"
     },
     "resources": [
         {
@@ -163,11 +178,11 @@
                         },
                         {
                             "name": "BlobStoreBindingConnection",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]"
+                            "value": "[variables('dataLakeConnectionString')]"
                         },
                         {
                             "name": "TableBindingConnection",
-                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'),'2015-05-01-preview').key1)]"
+                            "value": "[variables('dataLakeConnectionString')]"
                         }
                     ]
                 },
