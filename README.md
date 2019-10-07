@@ -87,6 +87,12 @@ You can quickly spin up a test environment in Azure using the following:
 
     az group deployment create --resource-group $RG_NAME --template-file azuredeploy.json
 
+## Further work
+
+If you ever run the Azure Pipeline you'll notice that all of the files get packaged
+up and deployed to the function. I'd like to drop resources such as `test-data` in the
+deployment in future iterations.
+
 ## References
 
 - [Azure Functions Python developer guide](https://docs.microsoft.com/en-us/azure/azure-functions/functions-reference-python)

@@ -44,6 +44,20 @@
                 1
             ]
         },
+        "dataLakeSubscriptionId": {
+            "type": "string",
+            "defaultValue": "[subscription().subscriptionId]",
+            "metadata": {
+                "description": "The name of the subscription that contains the data lake."
+            }
+        },
+        "dataLakeResourceGroupPrefix": {
+            "type": "string",
+            "defaultValue": "wb-datalake",
+            "metadata": {
+                "description": "The prefix for the RG that contains the data lake."
+            }
+        },
         "tagEnvironment": {
             "type": "string",
             "defaultValue": "dev",
@@ -62,7 +76,9 @@
         "storageAccountName": "[concat(parameters('storageAccountNamePrefix'), parameters('tagEnvironment'))]",
         "functionName": "[concat(parameters('functionNamePrefix'), '-', parameters('tagEnvironment'))]",
         "storageAccountsDataLakeName": "[concat(parameters('storageAccountsDataLakeNamePrefix'), parameters('tagEnvironment'))]",
-        "dataLakeConnectionString": "[concat('DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=', variables('storageAccountsDataLakeName'), ';AccountKey=')]"
+        "dataLakeConnectionString": "[concat('DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=', variables('storageAccountsDataLakeName'), ';AccountKey=')]",
+        "dataLakeResourceGroup": "[concat(parameters('dataLakeResourceGroupPrefix'), '-', parameters('tagEnvironment'))]",
+        "storageAccountsDataLakeResourceId": "[resourceId(parameters('dataLakeSubscriptionId'), variables('dataLakeResourceGroup'), 'Microsoft.Storage/storageAccounts', variables('storageAccountsDataLakeName'))]"
     },
     "resources": [
         {
@@ -177,11 +193,11 @@
                         },
                         {
                             "name": "BlobStoreBindingConnection",
-                            "value": "[concat(variables('dataLakeConnectionString'),listKeys(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountsDataLakeName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value)]"
+                            "value": "[concat(variables('dataLakeConnectionString'),listKeys(variables('storageAccountsDataLakeResourceId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value)]"
                         },
                         {
                             "name": "TableBindingConnection",
-                            "value": "[concat(variables('dataLakeConnectionString'),listKeys(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountsDataLakeName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value)]"
+                            "value": "[concat(variables('dataLakeConnectionString'),listKeys(variables('storageAccountsDataLakeResourceId'), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value)]"
                         }
                     ]
                 },
