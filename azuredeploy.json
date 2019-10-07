@@ -62,8 +62,7 @@
         "storageAccountName": "[concat(parameters('storageAccountNamePrefix'), parameters('tagEnvironment'))]",
         "functionName": "[concat(parameters('functionNamePrefix'), '-', parameters('tagEnvironment'))]",
         "storageAccountsDataLakeName": "[concat(parameters('storageAccountsDataLakeNamePrefix'), parameters('tagEnvironment'))]",
-        "dataLakeKey": "[listKeys(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountsDataLakeName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value]",
-        "dataLakeConnectionString": "[concat('DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=', variables('storageAccountsDataLakeName'), ';AccountKey=', variables('dataLakeKey'))]"
+        "dataLakeConnectionString": "[concat('DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=', variables('storageAccountsDataLakeName'), ';AccountKey=')]"
     },
     "resources": [
         {
@@ -178,11 +177,11 @@
                         },
                         {
                             "name": "BlobStoreBindingConnection",
-                            "value": "[variables('dataLakeConnectionString')]"
+                            "value": "[concat(variables('dataLakeConnectionString'),listKeys(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountsDataLakeName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value)]"
                         },
                         {
                             "name": "TableBindingConnection",
-                            "value": "[variables('dataLakeConnectionString')]"
+                            "value": "[concat(variables('dataLakeConnectionString'),listKeys(concat('Microsoft.Storage/storageAccounts/', variables('storageAccountsDataLakeName')), providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[parameters('storageAccountsDataLakeKeyNumber')].value)]"
                         }
                     ]
                 },
