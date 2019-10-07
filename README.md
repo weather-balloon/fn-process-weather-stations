@@ -87,7 +87,23 @@ You can quickly spin up a test environment in Azure using the following:
 
     az group deployment create --resource-group $RG_NAME --template-file azuredeploy.json
 
-## Further work
+## Notes
+
+### Logs
+
+The deployment configures App Insights and you can view performance info and logs.
+
+The query below can be run against the logs to see the processing taking place:
+
+    traces
+    | where operation_Name == "process_weather_stations"
+    | where parse_json(customDimensions).Category == "Function.process_weather_stations.User"
+    | where severityLevel == 1
+    | where message !startswith "Client-Request-ID"
+    | order by timestamp desc
+    | project timestamp, message
+
+### Further work
 
 If you ever run the Azure Pipeline you'll notice that all of the files get packaged
 up and deployed to the function. I'd like to drop resources such as `test-data` in the
